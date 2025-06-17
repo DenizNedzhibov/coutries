@@ -1,80 +1,209 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8">
-    <title>Държави и техните характеристики</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 60%;
-            margin: auto;
-        }
-
-        th, td {
-            border: 1px solid #999;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f0f0f0;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        caption {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prolog Console – държави и GIF</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Fira Code", "Consolas", monospace;
+      background: #0e1012;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 10px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 25px;
+      text-align: center;
+      color: #66d9ef;
+    }
+    #console {
+      width: 100%;
+      max-width: 720px;
+      background: #1b1d21;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,.55);
+      padding: 20px;
+      overflow: hidden;
+    }
+    #console-output {
+      min-height: 260px;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+    #console-output::-webkit-scrollbar {
+      width: 7px;
+    }
+    #console-output::-webkit-scrollbar-thumb {
+      background: #444;
+      border-radius: 4px;
+    }
+    .console-line {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+    .prompt {
+      color: #a6e22e;
+    }
+    #console-input {
+      flex: 1;
+      background: #1b1d21;
+      border: none;
+      border-bottom: 2px solid #66d9ef;
+      color: #e0e0e0;
+      font: inherit;
+      padding: 4px 6px;
+      outline: none;
+    }
+    #console-input::placeholder {
+      color: #777;
+    }
+    #gif-area {
+      margin-top: 25px;
+      min-height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .country-gif {
+      max-width: 180px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,.6);
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(5px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .line {
+      animation: fadeIn .25s ease-out;
+    }
+  </style>
 </head>
 <body>
+  <h1>Prolog Console: държави и GIF</h1>
 
-    <table>
-        <caption>Държави и техните характеристики</caption>
-        <thead>
-            <tr>
-                <th>Държава</th>
-                <th>Размер</th>
-                <th>Политическа система</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>САЩ</td>
-                <td>Голяма</td>
-                <td>Демократична</td>
-            </tr>
-            <tr>
-                <td>Русия</td>
-                <td>Голяма</td>
-                <td>Недемократична</td>
-            </tr>
-            <tr>
-                <td>Монако</td>
-                <td>Малка</td>
-                <td>Демократична</td>
-            </tr>
-            <tr>
-                <td>Китай</td>
-                <td>Голяма</td>
-                <td>Недемократична</td>
-            </tr>
-            <tr>
-                <td>Норвегия</td>
-                <td>Малка</td>
-                <td>Демократична</td>
-            </tr>
-        </tbody>
-    </table>
+  <div id="console">
+    <div id="console-output"></div>
+    <div class="console-line">
+      <span class="prompt">?-</span>
+      <input id="console-input" placeholder="Напиши Prolog заявка и натисни Enter…" autofocus />
+    </div>
+  </div>
 
+  <div id="gif-area"></div>
+
+  <script src="https://unpkg.com/tau-prolog@0.3.2/modules/core.js"></script>
+  <script>
+    // База знания за държави
+    const knowledge = `
+      % Държави
+      country(bulgaria).
+      country(usa).
+      country(russia).
+      country(china).
+      country(germany).
+      country(france).
+
+      % Големи държави
+      big(usa).
+      big(china).
+      big(russia).
+
+      % Демократични
+      democratic(usa).
+      democratic(bulgaria).
+      democratic(germany).
+      democratic(france).
+
+      % Недемократични
+      non_democratic(china).
+      non_democratic(russia).
+
+      % В Европа
+      in_europe(bulgaria).
+      in_europe(france).
+      in_europe(germany).
+
+      % Правила
+      is_big(X) :- big(X).
+      is_democratic(X) :- democratic(X).
+      is_non_democratic(X) :- non_democratic(X).
+      is_european(X) :- in_europe(X).
+    `;
+
+    const countryAnimations = {
+      bulgaria: '<img src="https://media.giphy.com/media/l2SpTjXYAYpVZgZqo/giphy.gif" class="country-gif" alt="България" />',
+      usa:      '<img src="https://media.giphy.com/media/3oEjHUf0bYyqK6QpUs/giphy.gif" class="country-gif" alt="USA" />',
+      china:    '<img src="https://media.giphy.com/media/l1J3preURPiwjRPvG/giphy.gif" class="country-gif" alt="Китай" />',
+      russia:   '<img src="https://media.giphy.com/media/l41YhWo3kza8s5rsM/giphy.gif" class="country-gif" alt="Русия" />',
+      germany:  '<img src="https://media.giphy.com/media/TWvTijT7YDAJW/giphy.gif" class="country-gif" alt="Германия" />',
+      france:   '<img src="https://media.giphy.com/media/l3vRi0U8nT8kFzb4g/giphy.gif" class="country-gif" alt="Франция" />'
+    };
+
+    const session = pl.create(1000);
+    session.consult(knowledge);
+
+    const input = document.getElementById("console-input");
+    const output = document.getElementById("console-output");
+    const gifArea = document.getElementById("gif-area");
+
+    function appendLine(text, css = "") {
+      const line = document.createElement("div");
+      line.textContent = text;
+      line.className = `line ${css}`;
+      output.appendChild(line);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function executeQuery(q) {
+      appendLine(`?- ${q}`);
+      gifArea.innerHTML = "";
+
+      try {
+        session.query(q, {
+          success: () => {
+            session.answers(answer => {
+              if (answer === false) {
+                appendLine("   No more results.");
+                return;
+              }
+              const res = pl.format_answer(answer);
+              appendLine(`   ${res}`);
+
+              const match = res.match(/X\s?=\s?(\w+)/);
+              if (match) {
+                const country = match[1];
+                if (countryAnimations[country]) {
+                  gifArea.innerHTML = countryAnimations[country];
+                }
+              }
+            });
+          },
+          error: err => appendLine(`   Error: ${err}`, "error")
+        });
+      } catch (e) {
+        appendLine(`   Exception: ${e.message}`, "error");
+      }
+    }
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter" && input.value.trim()) {
+        const q = input.value.trim();
+        input.value = "";
+        executeQuery(q);
+      }
+    });
+  </script>
 </body>
 </html>
-
