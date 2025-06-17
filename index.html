@@ -1,30 +1,80 @@
-% Държави
-country(usa).
-country(russia).
-country(monaco).
-country(china).
-country(norway).
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Държави и техните характеристики</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
-% Големи държави
-big(usa).
-big(russia).
-big(china).
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin: auto;
+        }
 
-% Малки държави
-small(monaco).
-small(norway).
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: center;
+        }
 
-% Демократични държави
-democratic(usa).
-democratic(norway).
-democratic(monaco).
+        th {
+            background-color: #f0f0f0;
+        }
 
-% Недемократични държави
-non_democratic(russia).
-non_democratic(china).
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-% Правила
-is_big(X) :- big(X).
-is_small(X) :- small(X).
-is_democratic(X) :- democratic(X).
-is_non_democratic(X) :- non_democratic(X).
+        caption {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <caption>Държави и техните характеристики</caption>
+        <thead>
+            <tr>
+                <th>Държава</th>
+                <th>Размер</th>
+                <th>Политическа система</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>САЩ</td>
+                <td>Голяма</td>
+                <td>Демократична</td>
+            </tr>
+            <tr>
+                <td>Русия</td>
+                <td>Голяма</td>
+                <td>Недемократична</td>
+            </tr>
+            <tr>
+                <td>Монако</td>
+                <td>Малка</td>
+                <td>Демократична</td>
+            </tr>
+            <tr>
+                <td>Китай</td>
+                <td>Голяма</td>
+                <td>Недемократична</td>
+            </tr>
+            <tr>
+                <td>Норвегия</td>
+                <td>Малка</td>
+                <td>Демократична</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
+
