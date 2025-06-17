@@ -1,0 +1,30 @@
+% Държави
+country(usa).
+country(russia).
+country(monaco).
+country(china).
+country(norway).
+
+% Големи държави
+big(usa).
+big(russia).
+big(china).
+
+% Малки държави
+small(monaco).
+small(norway).
+
+% Демократични държави
+democratic(usa).
+democratic(norway).
+democratic(monaco).
+
+% Недемократични държави
+non_democratic(russia).
+non_democratic(china).
+
+% Правила
+is_big(X) :- big(X).
+is_small(X) :- small(X).
+is_democratic(X) :- democratic(X).
+is_non_democratic(X) :- non_democratic(X).
